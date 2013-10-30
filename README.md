@@ -6,6 +6,8 @@ This script retrieve TER and Intercités journeys only and cannot be use to get 
 * TGV journeys
 * Realtime delays
 
+Feel free to fork this repo, improve it and send commit.
+
 ## Requirements
 You need Ruby to execute this script.
 
@@ -122,3 +124,6 @@ All train stations are localy stored in 'lib/data' file.
 
 ## License
 MIT
+
+## Author
+Alexis Blandin
