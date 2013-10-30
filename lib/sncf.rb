@@ -1,0 +1,107 @@
+require 'net/http'
+require 'rexml/document'
+require 'csv'
+
+module Sncf
+  class Journey
+    URL = 'http://ms.api.ter-sncf.com'
+
+    %i(departure arrival).each do |method|
+      define_method("get_next_#{method}") do |city|
+        matches = city_search(city)
+
+        if city.class == String and matches.count > 1 then
+          puts "Modify your parameter and choose only one external code or city name (litteral)"
+          show_city(matches)
+        elsif matches.count == 0
+          puts "Modify your parameter. We are not able to find a city with such that name"  
+        else
+          stop_area = (city.class == String ? matches[0][0] : city)
+          call_api("next#{method}", "stopareaexternalcode=OCE87#{stop_area}", "//Stop") do |stop|
+            puts build_journey_results(stop, method)
+          end
+        end
+      end
+    end
+
+    private
+
+    def city_search(city)
+      CSV.open('lib/data', 'r') do |data|
+        matches = data.find_all do |row|
+          row[1].include? city
+        end
+      end
+    end
+
+    def show_city(matches)
+      matches.sort_by { |row| row[1] }.each do |result|
+        puts "#{result[0]} | #{result[1]}"
+      end 
+    end
+
+    def build_area_results(area)
+      "#{area.get_attribute('', 'StopAreaName').capitalize}"\
+        " | #{area.get_attribute('', 'StopAreaExternalCode')}"
+    end
+
+    def build_journey_results(stop, method)
+      time_node = "Stop" + (method == :arrival ? "Arrival" : "") + "Time/"
+
+      "N°#{stop.get_attribute('VehicleJourney', 'VehicleJourneyName')}"\
+        " #{stop.get_attribute('VehicleJourney/Route/Line/ModeType','ModeTypeName')}"\
+        " | #{stop.get_attribute('VehicleJourney/Route','RouteName')}"\
+        " | #{stop.get_text(time_node + "Hour")}h#{stop.get_text(time_node + "Minute")}" 
+    end
+
+    def call_api(action, parameters, type)
+      XmlDocument.new(get_api_url(action, parameters)).get_elements(type) do |node|
+        yield node
+      end
+    end
+    
+    def get_api_url(action, parameters)
+      "#{URL}/?action=#{action.to_s}&#{parameters}"
+    end
+  end
+
+  class XmlElement < REXML::Element
+    def initialize(element)
+      @element = element
+    end
+
+    def get_attribute(root, attribute)
+      get_element(root).attributes[attribute]
+    end
+
+    def get_text(root)
+      get_element(root).text
+    end
+ 
+    def get_element(root)
+      @element.elements[root]
+    end
+  end
+
+  class XmlDocument 
+    def initialize(url)
+      @url = url
+    end
+
+    def get_elements(root)
+      get_doc.elements.each(root) do |element|
+        yield XmlElement.new(element)
+      end      
+    end
+
+    private
+
+    def get_doc
+      REXML::Document.new(get_data)
+    end
+    
+    def get_data
+      Net::HTTP.get_response(URI.parse(@url)).body
+    end
+  end
+end

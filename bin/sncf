@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/sncf.rb'
+include Sncf
+
+if ARGV.count == 2 then
+  case ARGV[0]
+  when "-Arrival" then Journey.new.get_next_arrival(ARGV[1])
+  when "-Departure" then Journey.new.get_next_departure(ARGV[1])
+  end
+end
