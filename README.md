@@ -1,7 +1,7 @@
 Sncf Journey
 ============
 
-Get the next arrivals or departures from the SNCF OpenData, which is a Beta API.
+Get the next arrivals or departures from the SNCF OpenData, which is a Beta API.  
 This script retrieve TER and Intercités journeys only and cannot be use to get this informations:
 * TGV journeys
 * Realtime delays
@@ -11,11 +11,11 @@ Feel free to fork this repo, improve it and send commit.
 ## Requirements
 You need Ruby to execute this script.
 
-In order to get results you need an Internet connexion to access SNCF OpenData API.
+In order to get results you need an Internet connexion to access SNCF OpenData API.  
 For more informations : http://test.data-sncf.com
 
 ## Instructions
-This script can be use to retrive arrivals or departures.
+This script can be use to retrive arrivals or departures.  
 To do this, you need to use one this arguments and precise the city you want to retrieve informations.
 
 For example, the list of arrival for Paris Austerlitz train station :
@@ -68,7 +68,7 @@ Modify your parameter and choose only one external code or city name
 547026 | Paris Austerlitz souterrain
 ```
 
-Plus, you can use a shortened version of your train station name.
+Plus, you can use a shortened version of your train station name.  
 For exeample, 'Limoges-B' instead of 'Limoges-Bénédictin'
 ```
 ./bin/sncf -Departures Limoges-B
@@ -81,7 +81,7 @@ N°861462 | Train TER  | Limoges-Bénédictins vers Vierzon              | 16h20
 ```
 
 ### How to get my train station code ?
-Each train station is describe as an unique stop area code (stopareaexternalcode).
+Each train station is describe as an unique stop area code (stopareaexternalcode).  
 To get your train station code you only need to ask the script.
 
 For example, i ask the list of arrival of Lyon. The script get more than one result and list all the trains train stations:
@@ -99,7 +99,7 @@ Modify your parameter and choose only one external code or city name
 686030 | Paris Gare de Lyon souterrain
 ```
 
-### Why my train station doesn't show any journeys ?
+### Why my train station doesn't show any journeys ?  
 Some specifics train stations (even if they are available) aren't stop for TER or Intercités.
 
 For example 'Marne la Vallée' is a train station that receives only TGV.
@@ -120,7 +120,7 @@ Departures for Marne la Vallée-Chessy (111849)
 ```
 
 ## SNCF OpenData
-All data are extract from SNCF OpenData :  http://test.data-sncf.com
+All data are extract from SNCF OpenData :  http://test.data-sncf.com  
 All train stations are localy stored in 'lib/data' file.
 
 ## License
