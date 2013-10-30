@@ -27,7 +27,7 @@ module Sncf
     private
 
     def city_search(city)
-      CSV.open('data', 'r') do |data|
+      CSV.open('lib/data', 'r') do |data|
         matches = data.find_all do |row|
           row[1].include? city
         end
