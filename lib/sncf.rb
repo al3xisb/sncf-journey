@@ -10,14 +10,14 @@ module Sncf
       define_method("get_next_#{method}") do |city|
         matches = city_search(city)
 
-        if city.class == String and matches.count > 1 then
-          puts "Modify your parameter and choose only one external code or city name (litteral)"
+        if matches.count > 1 then
+          puts "Modify your parameter and choose only one external code or city name"
           show_city(matches)
         elsif matches.count == 0
           puts "Modify your parameter. We are not able to find a city with such that name"  
         else
-          stop_area = (city.class == String ? matches[0][0] : city)
-          call_api("next#{method}", "stopareaexternalcode=OCE87#{stop_area}", "//Stop") do |stop|
+          puts "#{method.capitalize}s for #{matches[0][1]} (#{matches[0][0]})"
+          call_api("next#{method}", "stopareaexternalcode=OCE87#{matches[0][0]}", "//Stop") do |stop|
             puts build_journey_results(stop, method)
           end
         end
@@ -29,7 +29,7 @@ module Sncf
     def city_search(city)
       CSV.open('lib/data', 'r') do |data|
         matches = data.find_all do |row|
-          row[1].include? city
+          row[0].include? city or row[1].include? city
         end
       end
     end
@@ -46,12 +46,18 @@ module Sncf
     end
 
     def build_journey_results(stop, method)
-      time_node = "Stop" + (method == :arrival ? "Arrival" : "") + "Time/"
+      "N°%-6s | %-10s | %-45s | %-2sh%-2sm" % 
+        [
+          stop.get_attribute('VehicleJourney', 'VehicleJourneyName'),
+          stop.get_attribute('VehicleJourney/Route/Line/ModeType','ModeTypeName'),
+          stop.get_attribute('VehicleJourney/Route','RouteName')[0,45],
+          stop.get_text(time_node(method) + "Hour"),
+          stop.get_text(time_node(method) + "Minute")
+        ]
+    end
 
-      "N°#{stop.get_attribute('VehicleJourney', 'VehicleJourneyName')}"\
-        " #{stop.get_attribute('VehicleJourney/Route/Line/ModeType','ModeTypeName')}"\
-        " | #{stop.get_attribute('VehicleJourney/Route','RouteName')}"\
-        " | #{stop.get_text(time_node + "Hour")}h#{stop.get_text(time_node + "Minute")}" 
+    def time_node(method)
+      "Stop" + (method == :arrival ? "Arrival" : "") + "Time/"
     end
 
     def call_api(action, parameters, type)
