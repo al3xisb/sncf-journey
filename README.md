@@ -40,7 +40,7 @@ N°865772 | Train TER  | Sarlat vers Bordeaux-St-Jean                  | 13h58
 N°864823 | Train TER  | La Rochelle-Ville vers Bordeaux-St-Jean       | 14h03
 ```
 
-### Why i can use my exact train station name ?
+### Why i can't use my exact train station name ?
 As the script can be use to either search for journeys and returns lists of stations, you cannot use some exact train station name if your train station return more than one search results.
 
 For example, Paris returns exactly 10 train stations. 
