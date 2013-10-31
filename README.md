@@ -40,6 +40,25 @@ N°865772 | Train TER  | Sarlat vers Bordeaux-St-Jean                  | 13h58
 N°864823 | Train TER  | La Rochelle-Ville vers Bordeaux-St-Jean       | 14h03
 ```
 
+### How to get my train station code ?
+Each train station is describe as an unique stop area code (stopareaexternalcode).  
+To get your train station code you only need to ask the script.
+
+For example, i ask the list of arrival of Lyon. The script get more than one result and list all the trains train stations:
+```
+./lib/sncf Arrivals Lyon
+Modify your parameter and choose only one external code or city name
+282624 | Lyon Jean Macé
+762906 | Lyon Saint-Exupéry TGV
+721159 | Lyon Saint-Paul
+721175 | Lyon-Gorge-de-Loup
+723197 | Lyon-Part-Dieu
+722025 | Lyon-Perrache-Voyageurs
+721001 | Lyon-Vaise
+686006 | Paris Gare de Lyon
+686030 | Paris Gare de Lyon souterrain
+```
+
 ### Why i can't use my exact train station name ?
 As the script can be use to either search for journeys and returns lists of stations, you cannot use some exact train station name if your train station return more than one search results.
 
@@ -78,25 +97,6 @@ N°3640   | INTERCITÉS | Brive-la-Gaillarde vers Paris-Austerlitz      | 16h06m
 N°868010 | Train TER  | Limoges-Bénédictins vers Poitiers             | 16h10m
 N°868756 | Train TER  | Limoges-Bénédictins vers Guéret               | 16h11m
 N°861462 | Train TER  | Limoges-Bénédictins vers Vierzon              | 16h20m
-```
-
-### How to get my train station code ?
-Each train station is describe as an unique stop area code (stopareaexternalcode).  
-To get your train station code you only need to ask the script.
-
-For example, i ask the list of arrival of Lyon. The script get more than one result and list all the trains train stations:
-```
-./lib/sncf Arrivals Lyon
-Modify your parameter and choose only one external code or city name
-282624 | Lyon Jean Macé
-762906 | Lyon Saint-Exupéry TGV
-721159 | Lyon Saint-Paul
-721175 | Lyon-Gorge-de-Loup
-723197 | Lyon-Part-Dieu
-722025 | Lyon-Perrache-Voyageurs
-721001 | Lyon-Vaise
-686006 | Paris Gare de Lyon
-686030 | Paris Gare de Lyon souterrain
 ```
 
 ### Why my train station doesn't show any journeys ?  
