@@ -4,7 +4,8 @@ require 'csv'
 
 module Sncf
   class Journey
-    URL = 'http://ms.api.ter-sncf.com'
+    #Open API Ter SNCF
+	URL = 'http://ms.api.ter-sncf.com'
 
     %i(departure arrival).each do |method|
       define_method("get_next_#{method}") do |city|
